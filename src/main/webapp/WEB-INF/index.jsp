@@ -5,6 +5,6 @@
     <title>Cinema Stark</title>
 </head>
 <body>
-Hello, lets begin!
+
 </body>
 </html>
