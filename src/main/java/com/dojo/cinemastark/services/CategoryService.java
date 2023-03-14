@@ -1,35 +1,35 @@
 package com.dojo.cinemastark.services;
 
-import com.dojo.cinemastark.models.Categories;
+import com.dojo.cinemastark.models.Category;
 import com.dojo.cinemastark.models.Movie;
-import com.dojo.cinemastark.repositories.CategoriesRepo;
+import com.dojo.cinemastark.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 @Service
-public class CategoriesServices {
+public class CategoryService {
 
 
     @Autowired
-    private CategoriesRepo categoryRepo;
+    private CategoryRepository categoryRepo;
 
 
-    public CategoriesServices(CategoriesRepo categoryRepo) {
+    public CategoryService(CategoryRepository categoryRepo) {
         this.categoryRepo = categoryRepo;
     }
 
     //find all
-    public List<Categories> getall() {
+    public List<Category> getall() {
         return categoryRepo.findAll();
     }
 
 
 
     // find by id
-    public Categories getById(Long id) {
-        Optional<Categories> optional = categoryRepo.findById(id);
+    public Category getById(Long id) {
+        Optional<Category> optional = categoryRepo.findById(id);
         if (optional.isPresent()) {
             return optional.get();
         }
@@ -38,22 +38,22 @@ public class CategoriesServices {
     }
 
     //find by movies
-    public List<Categories> getByMovies(Movie movie) {
+    public List<Category> getByMovies(Movie movie) {
         return categoryRepo.findAllByMovies(movie);
     }
 
     //find by movies not container
-    public List<Categories> getByMoviesNotContains(Movie movie) {
+    public List<Category> getByMoviesNotContains(Movie movie) {
         return categoryRepo.findByMoviesNotContaining(movie);
     }
 
     // create
-    public Categories createCategory(Categories category) {
+    public Category createCategory(Category category) {
         return categoryRepo.save(category);
     }
 
     //update
-    public Categories updateCategory(Categories category) {
+    public Category updateCategory(Category category) {
         return categoryRepo.save(category);
     }
 
