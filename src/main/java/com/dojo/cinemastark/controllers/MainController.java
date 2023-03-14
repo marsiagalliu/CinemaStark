@@ -1,9 +1,13 @@
 package com.dojo.cinemastark.controllers;
 
 import com.dojo.cinemastark.models.Category;
+import com.dojo.cinemastark.models.Comment;
 import com.dojo.cinemastark.models.Movie;
+import com.dojo.cinemastark.models.User;
 import com.dojo.cinemastark.services.CategoryService;
+import com.dojo.cinemastark.services.CommentService;
 import com.dojo.cinemastark.services.MovieService;
+import com.dojo.cinemastark.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -28,6 +33,12 @@ public class MainController {
 
     @Autowired
     private CategoryService categoriesServices;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private UserService userService;
 
 
     @GetMapping("/")
@@ -61,18 +72,43 @@ public class MainController {
             movie.setViews(1);
             movieService.createMovie(movie);
         }else {
-            count++;
-            movie.setViews(count);
+            movie.setViews(count + 1);
             movieService.createMovie(movie);
         }
         return "anime-watching.jsp";
     }
+
+    @PostMapping("/details/{id}")
+    public String addComment(@PathVariable("id") Long id, @Valid @ModelAttribute("newComment") Comment comment, BindingResult result,
+                             HttpSession session){
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            return "anime-details.jsp";
+        } else {
+            Long loggedInUserID = (Long) session.getAttribute("loggedInUserID");
+
+            if (loggedInUserID == null) {
+                System.out.println("user is not logged in");
+                return "redirect:/login";
+            }
+            System.out.println("user is logged in");
+            User loggedInUser = userService.findOneUser(loggedInUserID);
+            comment.setUser(loggedInUser);
+            comment.setMovie(movieService.findMovie(id));
+            comment.setId(null);
+            commentService.createComment(comment);
+            return "redirect:details/" + id;
+        }
+    }
+
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id")Long id,  Model model){
         Movie movie = movieService.findMovie(id);
+        List<Comment> comments = commentService.findAllByMovieId(id);
         model.addAttribute("moviesId" , movie);
         model.addAttribute("movies" , movieService.allMovies());
         model.addAttribute("categories", categoriesServices.getall());
+        model.addAttribute("comment", comments);
         return "anime-details.jsp";
     }
 

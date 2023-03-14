@@ -47,6 +47,10 @@ public class Movie {
     @NotEmpty(message = "The production field is required!")
     private String quality;
 
+    @OneToMany(mappedBy="movie",fetch = FetchType.LAZY)
+    @Column(updatable=false)
+    private List<Comment> comments;
+
     @Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createdAt;
