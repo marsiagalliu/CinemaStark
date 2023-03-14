@@ -61,7 +61,7 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movies_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private List<Categories> categories;
+    private List<Category> categories;
 
     public Movie() {
     }
@@ -167,11 +167,11 @@ public class Movie {
         this.updatedAt = updatedAt;
     }
 
-    public List<Categories> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Categories> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
