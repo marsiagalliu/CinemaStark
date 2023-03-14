@@ -1,8 +1,8 @@
 package com.dojo.cinemastark.controllers;
 
-import com.dojo.cinemastark.models.Categories;
+import com.dojo.cinemastark.models.Category;
 import com.dojo.cinemastark.models.Movie;
-import com.dojo.cinemastark.services.CategoriesServices;
+import com.dojo.cinemastark.services.CategoryService;
 import com.dojo.cinemastark.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 @Controller
 public class MainController {
@@ -28,7 +27,7 @@ public class MainController {
     private MovieService movieService;
 
     @Autowired
-    private CategoriesServices categoriesServices;
+    private CategoryService categoriesServices;
 
 
     @GetMapping("/")
@@ -79,7 +78,7 @@ public class MainController {
 
     @GetMapping("/category/{id}")
     public  String categoryMovie(@PathVariable("id")Long id , Model model){
-        Categories categories = categoriesServices.getById(id);
+        Category categories = categoriesServices.getById(id);
         model.addAttribute("category" ,categories );
         model.addAttribute("categories", categoriesServices.getall());
         model.addAttribute("MoviesInCategory" , movieService.assingMovie(categories));
@@ -147,11 +146,11 @@ public class MainController {
 
 
     @GetMapping("/category/new")
-    public String newCategory(@ModelAttribute("category") Categories category , Model model, HttpSession session){
+    public String newCategory(@ModelAttribute("category") Category category , Model model, HttpSession session){
         return "newCategory.jsp";
     }
     @PostMapping("/category/new")
-    public String addCategory(@Valid @ModelAttribute("category") Categories category, BindingResult result,Model model , HttpSession session){
+    public String addCategory(@Valid @ModelAttribute("category") Category category, BindingResult result, Model model , HttpSession session){
         if (result.hasErrors()){
             return "newCategory.jsp";
         }
@@ -165,7 +164,7 @@ public class MainController {
     @GetMapping("/categories/{id}")
     public String showCategori(@PathVariable("id") Long id, Model model , HttpSession session){
 
-        Categories category = categoriesServices.getById(id);
+        Category category = categoriesServices.getById(id);
         model.addAttribute("category", category);
         model.addAttribute("assingMovie", movieService.assingMovie( category));
         model.addAttribute("unassingMovie", movieService.unAssingMovie(category));
@@ -173,7 +172,7 @@ public class MainController {
     }
     @PostMapping("/categories/{id}")
     public String addInProduct(@PathVariable("id") Long id, @RequestParam("productId") Long productId, Model model){
-        Categories category = categoriesServices.getById(id);
+        Category category = categoriesServices.getById(id);
         Movie movie = movieService.findMovie(productId);
         category.getMovies().add(movie);
         categoriesServices.updateCategory(category);

@@ -1,6 +1,6 @@
 package com.dojo.cinemastark.services;
 
-import com.dojo.cinemastark.models.Categories;
+import com.dojo.cinemastark.models.Category;
 import com.dojo.cinemastark.models.Movie;
 import com.dojo.cinemastark.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +41,10 @@ public class MovieService {
     }
 
 
-    public List<Movie> assingMovie(Categories categories){
+    public List<Movie> assingMovie(Category categories){
         return movieRepository.findByCategories(categories);
     }
-    public List<Movie> unAssingMovie(Categories categories){
+    public List<Movie> unAssingMovie(Category categories){
         return movieRepository.findAllByCategoriesNotContaining(categories);
     }
     public List<Movie> topthree(){

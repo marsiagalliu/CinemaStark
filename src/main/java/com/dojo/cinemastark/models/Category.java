@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "categories")
-public class Categories {
+public class Category {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
@@ -40,10 +40,10 @@ public class Categories {
     )
     private List<Movie> movies;
 
-    public Categories() {
+    public Category() {
     }
 
-    public Categories(String name) {
+    public Category(String name) {
         this.name = name;
     }
 
