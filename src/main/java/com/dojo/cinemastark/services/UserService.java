@@ -34,12 +34,6 @@ public class UserService {
             result.rejectValue("email", "EmailTaken", "Email address is already in use.");
         }
 
-        // Reject if password doesn't match confirmation
-
-        if (!newUser.getPassword().equals(newUser.getConfirm())) {
-            result.rejectValue("confirm", "Matches", "The Confirm Password must match Password!");
-        }
-
         // Return null if result has errors
 
         if (result.hasErrors()) {

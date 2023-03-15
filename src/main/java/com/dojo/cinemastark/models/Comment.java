@@ -75,6 +75,14 @@ public class Comment {
         this.movie = movie;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @PrePersist
     protected void onCreate(){
         this.createdAt = new Date();

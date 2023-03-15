@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Anime</title>
   <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
   <!-- YOUR own local CSS -->
   <link rel="stylesheet" href="/css/style.css"/>

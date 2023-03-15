@@ -18,7 +18,7 @@
     <meta name="keywords" content="Anime, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Anime | Template</title>
+    <title>Anime Details</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -161,17 +161,19 @@
                             <div class="section-title">
                                 <h5>Reviews</h5>
                             </div>
+                            <form:form action="/details/${moviesId.id}" method="post" modelAttribute="newComment">
                             <c:forEach var="comment" items="${comment}">
                             <div class="anime__review__item">
                                 <div class="anime__review__item__pic">
                                     <img src="img/anime/review-3.jpg" alt="">
                                 </div>
                                 <div class="anime__review__item__text">
-                                    <h6>${comment.user.userName} - <span>20 Hour ago</span></h6>
+                                    <h6>${comment.user.userName} - <span> <fmt:formatDate value="${comment.createdAt}" pattern="dd/MM/yy HH:mm"></fmt:formatDate> </span></h6>
                                     <p>${comment.message}</p>
                                 </div>
                             </div>
                             </c:forEach>
+                            </form:form>
                         </div>
                         <div class="anime__details__form">
                             <div class="section-title">

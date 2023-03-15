@@ -1,9 +1,6 @@
 package com.dojo.cinemastark.controllers;
 
-import com.dojo.cinemastark.models.Category;
-import com.dojo.cinemastark.models.Comment;
-import com.dojo.cinemastark.models.Movie;
-import com.dojo.cinemastark.models.User;
+import com.dojo.cinemastark.models.*;
 import com.dojo.cinemastark.services.CategoryService;
 import com.dojo.cinemastark.services.CommentService;
 import com.dojo.cinemastark.services.MovieService;
@@ -58,9 +55,43 @@ public class MainController {
         return "login.jsp";
     }
     @GetMapping("/signup")
-    public String signup(Model model){
+    public String signup(Model model, @ModelAttribute("newUser") User newUser,
+                         @ModelAttribute("newLogin") User newLogin){
         model.addAttribute("category", categoriesServices.getall());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("newLogin", new LoginUser());
+
         return "signup.jsp";
+    }
+
+    @PostMapping("/login")
+    public String login(@Valid @ModelAttribute("newLogin") LoginUser newLogin, BindingResult result, Model model,
+                        HttpSession session) {
+        User user = userService.login(newLogin, result);
+
+        System.out.println(user);
+
+        if (result.hasErrors()) {
+            model.addAttribute("newUser", new User());
+            return "index.jsp";
+        }
+        session.setAttribute("loggedInUserID", user.getId());
+        return "redirect:/";
+    }
+
+    @PostMapping("/signup")
+    public String register(@Valid @ModelAttribute("newUser") User newUser, BindingResult result, Model model,
+                           HttpSession session) {
+        userService.register(newUser, result);
+
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            model.addAttribute("newLogin", new LoginUser());
+            return "index.jsp";
+        }
+
+        session.setAttribute("loggedInUserID", newUser.getId());
+        return "redirect:/";
     }
 
     @GetMapping("/watching/{id}")

@@ -28,16 +28,13 @@ public class User {
     @Size(min = 8, max = 128, message = "Password must be between 8 and 128 characters")
     private String password;
 
-    @Transient
-    @NotEmpty(message = "Confirm Password is required!")
-    @Size(min = 8, max = 128, message = "Confirm Password must be between 8 and 128 characters")
-    private String confirm;
-
 //    @Column(updatable=false)
 //    @OneToMany(mappedBy="addedBy", fetch = FetchType.LAZY)
 //    private List<Listing> listingsCreated;
 
-
+    @OneToMany(mappedBy="user",fetch = FetchType.LAZY)
+    @Column(updatable=false)
+    private List<Comment> comments;
 
     @Column(updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -59,13 +56,21 @@ public class User {
     public User() {
     }
 
+
     // loaded constructor
-    public User(String userName, String email, String password, String confirm) {
+    public User(String userName, String email, String password) {
         super();
         this.userName = userName;
         this.email = email;
         this.password = password;
-        this.confirm = confirm;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public Long getId() {
@@ -100,9 +105,6 @@ public class User {
         this.password = password;
     }
 
-    public String getConfirm() {
-        return confirm;
-    }
 
 //    public List<Listing> getListingsCreated() {
 //        return listingsCreated;
@@ -112,9 +114,6 @@ public class User {
 //        this.listingsCreated = listingsCreated;
 //    }
 
-    public void setConfirm(String confirm) {
-        this.confirm = confirm;
-    }
     public Date getCreatedAt() {
         return createdAt;
     }
