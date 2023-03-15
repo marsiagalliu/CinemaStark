@@ -3,7 +3,6 @@ package com.dojo.cinemastark.models;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -18,36 +17,39 @@ public class Movie {
     private Long id;
 
     @NotEmpty(message = "The movie name is required!")
-    @Size(min = 3, max = 30, message = "The name should include at least 3 characters!")
-    private String movieName;
+    private String animeName;
 
     @NotEmpty(message = "The movie description is required!")
     @Size(min = 5, message = "The description should include at least 5 characters!")
-    private String overview;
+    private String description;
+
+    private String coverImg;
+
+    private String videoAnime;
 
     @NotEmpty(message = "The genre is required!")
-    @Size(min = 2, max = 20, message = "The genre should include at least 5 characters!")
-    private String genre;
+
+    private String dateAired;
+    private String type;
 
     @NotEmpty(message = "The released date is required!")
-    @Min(value = 1)
-    private Integer released;
+
+    private String studio;
 
     @NotEmpty(message = "The duration is required!")
-    @Min(value = 1)
-    private Integer duration;
 
-    @NotEmpty(message = "The cast field is required!")
-    @Size(min = 2, max = 100, message = "The cast field should include at least 2 characters!")
-    private String cast;
+    private String status;
+    private Integer duration;
+    private  Integer views;
+
+
 
     @NotEmpty(message = "The production field is required!")
-    @Size(min = 2, max = 100, message = "The production field should include at least 2 characters!")
-    private String production;
+    private String quality;
 
-    @NotEmpty(message = "The country is required!")
-    @Size(min = 2, max = 20, message = "The country should include at least 2 characters!")
-    private String country;
+    @OneToMany(mappedBy="movie",fetch = FetchType.LAZY)
+    @Column(updatable=false)
+    private List<Comment> comments;
 
     @Column(updatable=false)
     @DateTimeFormat(pattern="yyyy-MM-dd")
@@ -61,21 +63,14 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movies_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private List<Categories> categories;
+    private List<Category> categories;
 
     public Movie() {
     }
 
-    public Movie(Long id, String movieName, String overview, String genre, Integer released, Integer duration, String cast, String production, String country) {
-        this.id = id;
-        this.movieName = movieName;
-        this.overview = overview;
-        this.genre = genre;
-        this.released = released;
-        this.duration = duration;
-        this.cast = cast;
-        this.production = production;
-        this.country = country;
+    public Movie(String coverImg , String videoAnime) {
+        this.coverImg = coverImg;
+        this.videoAnime = videoAnime;
     }
 
     public Long getId() {
@@ -86,70 +81,71 @@ public class Movie {
         this.id = id;
     }
 
-    public String getMovieName() {
-        return movieName;
+    public String getAnimeName() {
+        return animeName;
     }
 
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
+    public void setAnimeName(String animeName) {
+        this.animeName = animeName;
     }
 
-    public String getOverview() {
-        return overview;
+    public String getDescription() {
+        return description;
     }
 
-    public void setOverview(String overView) {
-        this.overview = overView;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getCoverImg() {
+        return coverImg;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg;
     }
 
-    public Integer getReleased() {
-        return released;
+    public String getVideoAnime() {
+        return videoAnime;
     }
 
-    public void setReleased(Integer released) {
-        this.released = released;
+    public void setVideoAnime(String videoAnime) {
+        this.videoAnime = videoAnime;
     }
 
-    public Integer getDuration() {
-        return duration;
+    public String getDateAired() {
+        return dateAired;
     }
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setDateAired(String dateAired) {
+        this.dateAired = dateAired;
     }
 
-    public String getCast() {
-        return cast;
+    public String getStudio() {
+        return studio;
     }
 
-    public void setCast(String cast) {
-        this.cast = cast;
+    public void setStudio(String studio) {
+        this.studio = studio;
     }
 
-    public String getProduction() {
-        return production;
+    public String getStatus() {
+        return status;
     }
 
-    public void setProduction(String production) {
-        this.production = production;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public String getCountry() {
-        return country;
+
+
+    public String getQuality() {
+        return quality;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setQuality(String quality) {
+        this.quality = quality;
     }
-
 
     public Date getCreatedAt() {
         return createdAt;
@@ -167,12 +163,36 @@ public class Movie {
         this.updatedAt = updatedAt;
     }
 
-    public List<Categories> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Categories> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public Integer getViews() {
+        return views;
+    }
+
+    public void setViews(Integer views) {
+        this.views = views;
     }
 
     @PrePersist
