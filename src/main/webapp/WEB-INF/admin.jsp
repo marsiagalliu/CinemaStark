@@ -1,5 +1,5 @@
 a<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+          pageEncoding="UTF-8"%>
 
 <!-- c:out ; c:forEach ; c:if -->
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -57,7 +57,7 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8"
                 <div class="header__nav">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="/">Homepage</a></li>
+                            <li class="active"><a href="/admin">Admin Dashboard</a></li>
                             <li><a>Categories <span class="arrow_carrot-down"></span></a>
                                 <ul class="dropdown">
                                     <c:forEach var="categories" items="${categories}">
@@ -65,7 +65,9 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8"
                                     </c:forEach>
                                 </ul>
                             </li>
-                            <li><a href="/contacts">Contacts</a></li>
+                            <li><a href="/anime/new">Add a new Anime</a></li>
+                            <li><a href="/category/new">Create a new Category</a></li>
+
                         </ul>
                     </nav>
                 </div>
@@ -73,8 +75,9 @@ a<%@ page language="java" contentType="text/html; charset=UTF-8"
             <div class="col-lg-2">
                 <div class="header__right">
                     <a  class="search-switch"><span class="icon_search"></span></a>
-                    <a href="/login"><span class="icon_profile"></span></a>
-                </div>
+                    <c:if test="${userId.id!=null}">
+                        <a href="/logout">Logout<span class="icon_profile"></span></a>
+                    </c:if>
             </div>
         </div>
         <div id="mobile-menu-wrap"></div>

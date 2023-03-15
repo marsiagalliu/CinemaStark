@@ -39,14 +39,21 @@ public class MainController {
 
 
     @GetMapping("/")
-    public String index(Model model){
+    public String index(Model model, HttpSession session){
         model.addAttribute("movies" , movieService.allMovies());
         model.addAttribute("moviesThree" , movieService.topthree());
         model.addAttribute("category", categoriesServices.getall());
         model.addAttribute("newAddMovies", movieService.newAdd());
         model.addAttribute("trendingAnime", movieService.trending());
+        Long loggedInUserID = (Long) session.getAttribute("loggedInUserID");
+      //  User user = userService.findOneUser(loggedInUserID);
+       // model.addAttribute("userId",userService.findOneUser(loggedInUserID) );
+        if(loggedInUserID!=null){
+            model.addAttribute("userId",userService.findOneUser(loggedInUserID) );
+        }
 
         return "index.jsp";
+
     }
 
     @GetMapping("/login")
@@ -93,6 +100,8 @@ public class MainController {
         session.setAttribute("loggedInUserID", newUser.getId());
         return "redirect:/";
     }
+
+
 
     @GetMapping("/watching/{id}")
     public String watching(@PathVariable("id")Long id,  Model model, HttpSession session){
@@ -232,6 +241,17 @@ public class MainController {
 
         return "redirect:/";
     }
+    @GetMapping("/admin")
+    public String admin(Model model, HttpSession session){
+        Long loggedInUserID = (Long) session.getAttribute("loggedInUserID");
+
+        model.addAttribute("userId", userService.findOneUser(loggedInUserID));
+
+        if(loggedInUserID!=1){
+            return "redirect:/";
+        }
+        return "admin.jsp";
+    }
 
 
 
@@ -269,5 +289,11 @@ public class MainController {
         category.getMovies().add(movie);
         categoriesServices.updateCategory(category);
         return "redirect:/categories/"+id;
+    }
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+
     }
 }
