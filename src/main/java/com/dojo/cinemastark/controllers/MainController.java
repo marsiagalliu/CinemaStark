@@ -97,16 +97,41 @@ public class MainController {
     @GetMapping("/watching/{id}")
     public String watching(@PathVariable("id")Long id,  Model model, HttpSession session){
        Movie movie = movieService.findMovie(id);
+        List<Comment> comments = commentService.findAllByMovieId(id);
         model.addAttribute("moviesId" , movie);
+        model.addAttribute("comment", comments);
         Integer count = movie.getViews();
         if(count == null){
             movie.setViews(1);
             movieService.createMovie(movie);
         }else {
-            movie.setViews(count + 1);
+            movie.setViews(count += 1);
             movieService.createMovie(movie);
         }
         return "anime-watching.jsp";
+    }
+
+    @PostMapping("/watching/{id}")
+    public String comment(@PathVariable("id") Long id, @Valid @ModelAttribute("newComment") Comment comment, BindingResult result,
+                             HttpSession session){
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            return "anime-details.jsp";
+        } else {
+            Long loggedInUserID = (Long) session.getAttribute("loggedInUserID");
+
+            if (loggedInUserID == null) {
+                System.out.println("user is not logged in");
+                return "redirect:/login";
+            }
+            System.out.println("user is logged in");
+            User loggedInUser = userService.findOneUser(loggedInUserID);
+            comment.setUser(loggedInUser);
+            comment.setMovie(movieService.findMovie(id));
+            comment.setId(null);
+            commentService.createComment(comment);
+            return "redirect:details/" + id;
+        }
     }
 
     @PostMapping("/details/{id}")
