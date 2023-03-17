@@ -30,7 +30,7 @@
     <div
             class="d-flex flex-column justify-content-center align-items-center gap-2">
         <h1> Create Categories:</h1>
-        <a href="/">Go Back</a>
+        <a href="/admin">Go Back</a>
     </div>
     <div
             class="d-flex justify-content-center gap-5 mt-3">

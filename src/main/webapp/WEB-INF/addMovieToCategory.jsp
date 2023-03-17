@@ -11,7 +11,7 @@
   <title>Anime</title>
   <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
   <!-- YOUR own local CSS -->
-  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
   <!-- For any Bootstrap that uses JS-->
   <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
