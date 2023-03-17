@@ -65,7 +65,7 @@
                                         </c:forEach>
                                     </ul>
                                 </li>
-                                <li><a href="/contacts">Contacts</a></li>
+                                <li><a href="/contact">Contacts</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -370,9 +370,9 @@
                 <div class="footer__nav">
                     <ul>
                         <li class="active"><a href="/">Homepage</a></li>
-                        <li><a href="./categories.html">Categories</a></li>
-                        <li><a href="./blog.html">Our Blog</a></li>
-                        <li><a href="#">Contacts</a></li>
+                        <li><a href="/category">Categories</a></li>
+                        <li><a href="./blog">Our Blog</a></li>
+                        <li><a href="/contact">Contacts</a></li>
                     </ul>
                 </div>
             </div>

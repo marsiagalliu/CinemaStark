@@ -12,8 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-
 import javax.validation.Valid;
 import java.io.IOException;
 import javax.servlet.http.HttpSession;
@@ -75,15 +73,19 @@ public class MainController {
     public String login(@Valid @ModelAttribute("newLogin") LoginUser newLogin, BindingResult result, Model model,
                         HttpSession session) {
         User user = userService.login(newLogin, result);
-
-        System.out.println(user);
+        Long loggedInUserID = user.getId();
+        session.setAttribute("loggedInUserID", loggedInUserID);
 
         if (result.hasErrors()) {
             model.addAttribute("newUser", new User());
             return "index.jsp";
         }
-        session.setAttribute("loggedInUserID", user.getId());
-        return "redirect:/";
+
+        if(loggedInUserID == 1){
+            return "admin.jsp";
+        } else {
+            return "redirect:/";
+        }
     }
 
     @PostMapping("/signup")
@@ -100,8 +102,6 @@ public class MainController {
         session.setAttribute("loggedInUserID", newUser.getId());
         return "redirect:/";
     }
-
-
 
     @GetMapping("/watching/{id}")
     public String watching(@PathVariable("id")Long id,  Model model, HttpSession session){
@@ -142,7 +142,6 @@ public class MainController {
             return "redirect:/watching/" + id;
         }
     }
-
     @PostMapping("/details/{id}")
     public String addComment(@PathVariable("id") Long id, @Valid @ModelAttribute("newComment") Comment comment, BindingResult result,
                              HttpSession session){
@@ -245,17 +244,23 @@ public class MainController {
     public String admin(Model model, HttpSession session){
         Long loggedInUserID = (Long) session.getAttribute("loggedInUserID");
 
-        model.addAttribute("userId", userService.findOneUser(loggedInUserID));
+        if (loggedInUserID == null) {
+            return "redirect:/login";
+        }
 
-        if(loggedInUserID!=1){
+        if(loggedInUserID != 1){
             return "redirect:/";
         }
+
+        User user = userService.findOneUser(loggedInUserID);
+        model.addAttribute("userId", user);
+
         return "admin.jsp";
     }
-
-
-
-
+    @GetMapping("/contact")
+    public String contact(){
+        return "contact.jsp";
+    }
 
     @GetMapping("/category/new")
     public String newCategory(@ModelAttribute("category") Category category , Model model, HttpSession session){

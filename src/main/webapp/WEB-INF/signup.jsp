@@ -115,7 +115,7 @@
                                 <span class="icon_profile"></span>
                             </div>
                             <div class="input__item">
-                                <input name="password" type="text" placeholder="Password">
+                                <input name="password" type="password" placeholder="Password">
                                 <span class="icon_lock"></span>
                             </div>
                             <button type="submit" class="site-btn">Login Now</button>
