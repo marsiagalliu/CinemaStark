@@ -2,6 +2,7 @@ package com.dojo.cinemastark.services;
 
 import com.dojo.cinemastark.models.Category;
 import com.dojo.cinemastark.models.Movie;
+import com.dojo.cinemastark.models.User;
 import com.dojo.cinemastark.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,5 +61,10 @@ public class MovieService {
     }
     public List<Movie> trending(){
         return movieRepository.findTop9ByOrderByUpdatedAtDesc();
+    }
+
+
+    public List<Movie> findByUser(User user){
+        return movieRepository.findByUserFavorites(user);
     }
 }

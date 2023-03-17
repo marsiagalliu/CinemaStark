@@ -36,6 +36,10 @@ public class User {
     @Column(updatable=false)
     private List<Comment> comments;
 
+    @OneToMany(mappedBy="user",fetch = FetchType.LAZY)
+    @Column(updatable=false)
+    private List<Movie> movies;
+
     @Column(updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
@@ -51,6 +55,9 @@ public class User {
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "favourite" , joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn( name = "movies_id"))
+    private List<Movie> favorites;
 
     // empty constructor
     public User() {
@@ -105,8 +112,23 @@ public class User {
         this.password = password;
     }
 
+    public List<Movie> getFavorites() {
+        return favorites;
+    }
 
-//    public List<Listing> getListingsCreated() {
+    public void setFavorites(List<Movie> favorites) {
+        this.favorites = favorites;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
+
+    //    public List<Listing> getListingsCreated() {
 //        return listingsCreated;
 //    }
 //

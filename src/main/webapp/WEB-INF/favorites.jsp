@@ -89,6 +89,7 @@
     </div>
 </header>
 <!-- Header End -->
+
 <!-- Product Section Begin -->
 <section class="product spad">
     <div class="container">
@@ -98,7 +99,7 @@
                     <div class="row">
                         <div class="col-lg-8 col-md-8 col-sm-8">
                             <div class="section-title">
-                                <h4>${category.name}</h4>
+                                <h4>${userId.userName} Favorites</h4>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
@@ -107,7 +108,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <c:forEach var="movie" items="${MoviesInCategory}">
+                        <c:forEach var="movie" items="${fav}">
                             <div class="col-lg-4 col-md-6 col-sm-6">
 
                                 <div class="product__item">
@@ -117,7 +118,6 @@
                                         <div class="view"><i class="fa fa-eye"></i> ${movie.views}</div>
                                     </div>
                                     <div class="product__item__text">
-
                                         <h5><a href="/details/${movie.id}">${movie.animeName}</a></h5>
                                     </div>
                                 </div>
@@ -154,7 +154,7 @@
             </div>
             <div class="col-lg-3">
                 <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="/" >M.A.G</a>
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="/">M.A.G</a>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
 
             </div>

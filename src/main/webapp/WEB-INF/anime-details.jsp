@@ -66,6 +66,9 @@
                                     </ul>
                                 </li>
                                 <li><a href="/contacts">Contacts</a></li>
+                                <c:if test="${userId != null }">
+                                    <li><a href="/favorite/${userId.id}">${userId.userName} Favorites</a></li>
+                                </c:if>
                             </ul>
                         </nav>
                     </div>
@@ -73,7 +76,12 @@
                 <div class="col-lg-2">
                     <div class="header__right">
                         <a  class="search-switch"><span class="icon_search"></span></a>
-                        <a href="/login"><span class="icon_profile"></span></a>
+                        <c:if test="${userId != null }">
+                            <a href="/logout"><span class="icon_profile"></span>Logout</a>
+                        </c:if>
+                        <c:if test="${userId == null }">
+                            <a href="/login"><span class="icon_profile"></span></a>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -82,21 +90,6 @@
     </header>
     <!-- Header End -->
 
-    <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                        <a href="./categories.html">Categories</a>
-                        <span>Romance</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Breadcrumb End -->
 
     <!-- Anime Section Begin -->
     <section class="anime-details spad">
@@ -105,7 +98,7 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="anime__details__pic set-bg" data-setbg="${moviesId.coverImg}">
-                            <div class="comment"><i class="fa fa-comments"></i> 11</div>
+                            <div class="comment"><i class="fa fa-comments"></i>  ${moviesId.getComments().size()}</div>
                             <div class="view"><i class="fa fa-eye"></i> ${moviesId.views}</div>
                         </div>
                     </div>
@@ -133,12 +126,10 @@
                                             <li><span>Studios:</span> ${moviesId.studio}</li>
                                             <li><span>Date aired:</span>${moviesId.dateAired}</li>
                                             <li><span>Status:</span> ${moviesId.status}</li>
-                                            <li><span>Genre:</span> Action, Adventure, Fantasy, Magic</li>
                                         </ul>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <ul>
-                                            <li><span>Scores:</span> 7.31 / 1,515</li>
                                             <li><span>Rating:</span> 8.5 / 161 times</li>
                                             <li><span>Duration:</span> ${moviesId.duration} min/ep</li>
                                             <li><span>Quality:</span> ${moviesId.quality}</li>
@@ -148,6 +139,17 @@
                                 </div>
                             </div>
                             <div class="anime__details__btn">
+                                <c:if test="${userId  != null}" >
+                               <c:if test="${moviesId.fav  == false}" >
+                                <a href="/favorites/${moviesId.id}" class="follow-btn"><i class="fa fa-star-o empty"></i>Favorits</a>
+                               </c:if>
+                                    <c:if test="${moviesId.fav  == true}" >
+                                        <a href="/delete/favorites/${moviesId.id}" class="follow-btn"><i class="fa fa-star"></i>UnFavorits</a>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${userId  == null}" >
+                                    <a href="/login" class="follow-btn"><i class="fa fa-star-o empty"></i>Favorits</a>
+                                </c:if>
                                 <a href="/watching/${moviesId.id}" class="watch-btn"><span>Watch Now</span> <i
                                     class="fa fa-angle-right"></i></a>
                                 </div>
@@ -161,19 +163,15 @@
                             <div class="section-title">
                                 <h5>Reviews</h5>
                             </div>
-                            <form:form action="/details/${moviesId.id}" method="post" modelAttribute="newComment">
                             <c:forEach var="comment" items="${comment}">
                             <div class="anime__review__item">
-                                <div class="anime__review__item__pic">
-                                    <img src="img/anime/review-3.jpg" alt="">
-                                </div>
+
                                 <div class="anime__review__item__text">
                                     <h6>${comment.user.userName} - <span> <fmt:formatDate value="${comment.createdAt}" pattern="dd/MM/yy HH:mm"></fmt:formatDate> </span></h6>
                                     <p>${comment.message}</p>
                                 </div>
                             </div>
                             </c:forEach>
-                            </form:form>
                         </div>
                         <div class="anime__details__form">
                             <div class="section-title">
@@ -181,7 +179,7 @@
                             </div>
                             <%--@elvariable id="newComment" type="java"--%>
                             <form:form action="/details/${moviesId.id}" method="post" modelAttribute="newComment">
-                                <textarea name="message" placeholder="Your Comment"></textarea>
+                                <form:textarea path="message" placeholder="Your Comment"></form:textarea>
                                 <button type="submit" ><i class="fa fa-location-arrow"></i> Review</button>
                             </form:form>
                         </div>
@@ -195,7 +193,7 @@
                             <div class="product__sidebar__view__item set-bg" data-setbg="${movies.coverImg}">
                                 <div class="ep">18 / ?</div>
                                 <div class="view"><i class="fa fa-eye"></i> ${movies.views}</div>
-                                <h5><a href="#">${movies.animeName}</a></h5>
+                                <h5><a href="/details/${movies.id}">${movies.animeName}</a></h5>
                             </div>
                             </c:forEach>
                         </div>
@@ -214,22 +212,21 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="footer__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="/"><img src="/img/logo.png" alt=""></a>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="footer__nav">
                             <ul>
-                                <li class="active"><a href="./index.html">Homepage</a></li>
-                                <li><a href="./categories.html">Categories</a></li>
-                                <li><a href="./blog.html">Our Blog</a></li>
-                                <li><a href="#">Contacts</a></li>
+                                <li class="active"><a href="/">Homepage</a></li>
+                                <li><a href="/">Categories</a></li>
+                                <li><a href="/">Contacts</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="/" >M.A.G</a>
                           <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
 
                       </div>
@@ -244,7 +241,6 @@
             <div class="search-close-switch"><i class="icon_close"></i></div>
             <form action="/search" method="post" class="search-model-form">
                 <input type="text" id="search-input" name="name" placeholder="Search here.....">
-                <button class="search-btn">Search</button>
             </form>
         </div>
     </div>

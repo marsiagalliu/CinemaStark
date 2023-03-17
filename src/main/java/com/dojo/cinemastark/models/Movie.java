@@ -42,6 +42,8 @@ public class Movie {
     private Integer duration;
     private  Integer views;
 
+    private Boolean fav;
+
 
 
     @NotEmpty(message = "The production field is required!")
@@ -64,6 +66,13 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Category> categories;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "favourite" , joinColumns = @JoinColumn(name = "movies_id"), inverseJoinColumns = @JoinColumn( name = "user_id"))
+    private List<User> userFavorites;
 
     public Movie() {
     }
@@ -193,6 +202,39 @@ public class Movie {
 
     public void setViews(Integer views) {
         this.views = views;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<User> getUserFavorites() {
+        return userFavorites;
+    }
+
+    public void setUserFavorites(List<User> userFavorites) {
+        this.userFavorites = userFavorites;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
+    public Boolean getFav() {
+        return fav;
+    }
+
+    public void setFav(Boolean fav) {
+        this.fav = fav;
     }
 
     @PrePersist
