@@ -114,7 +114,7 @@ public class MainController {
             movie.setViews(1);
             movieService.createMovie(movie);
         }else {
-            movie.setViews(count += 1);
+            movie.setViews(++count);
             movieService.createMovie(movie);
         }
         return "anime-watching.jsp";
@@ -139,7 +139,7 @@ public class MainController {
             comment.setMovie(movieService.findMovie(id));
             comment.setId(null);
             commentService.createComment(comment);
-            return "redirect:details/" + id;
+            return "redirect:/watching/" + id;
         }
     }
 
@@ -162,7 +162,7 @@ public class MainController {
             comment.setMovie(movieService.findMovie(id));
             comment.setId(null);
             commentService.createComment(comment);
-            return "redirect:details/" + id;
+            return "redirect:/details/" + id;
         }
     }
 
